@@ -1,0 +1,84 @@
+{
+  "name": "Windows 11 Business Template",
+  "description": "Optimized Windows 11 template for AI business management operations",
+  "user": "William Smiley",
+  "purpose": "Business Executive Directors Board operations",
+  "specifications": {
+    "vmid": 9000,
+    "ostype": "win11",
+    "memory": 8192,
+    "cores": 4,
+    "sockets": 1,
+    "cpu": "host",
+    "machine": "q35",
+    "bios": "ovmf",
+    "boot": "order=ide2",
+    "agent": "enabled=1"
+  },
+  "storage": {
+    "scsi0": {
+      "size": "32G",
+      "format": "qcow2",
+      "storage": "local-lvm",
+      "description": "System disk"
+    },
+    "scsi1": {
+      "size": "100G", 
+      "format": "qcow2",
+      "storage": "local-lvm",
+      "description": "Data disk for business applications"
+    },
+    "efidisk0": {
+      "size": "1M",
+      "format": "raw",
+      "storage": "local-lvm",
+      "efitype": "4m",
+      "pre-enrolled-keys": true
+    },
+    "tpmstate0": {
+      "size": "4M",
+      "storage": "local-lvm",
+      "version": "v2.0"
+    }
+  },
+  "network": {
+    "net0": {
+      "model": "virtio",
+      "bridge": "vmbr0",
+      "description": "Primary business network"
+    }
+  },
+  "features": {
+    "tpm": true,
+    "secure_boot": true,
+    "uefi": true,
+    "guest_agent": true
+  },
+  "optimization": {
+    "target": "business_productivity",
+    "ai_integration": true,
+    "executive_dashboard": true,
+    "multi_ai_support": true
+  },
+  "software_recommendations": [
+    "Microsoft Office 365 Business Premium",
+    "Power BI for business analytics",
+    "Microsoft Teams for collaboration",
+    "AI business management applications",
+    "Executive dashboard software",
+    "Business intelligence tools",
+    "Multi-AI coordination clients"
+  ],
+  "security": {
+    "tpm_required": true,
+    "secure_boot": true,
+    "bitlocker_ready": true,
+    "enterprise_security": true
+  },
+  "performance": {
+    "memory_balloon": true,
+    "cpu_hotplug": true,
+    "disk_cache": "writethrough",
+    "network_multiqueue": true
+  }
+}

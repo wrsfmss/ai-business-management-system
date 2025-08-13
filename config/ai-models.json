@@ -1,0 +1,239 @@
+{
+  "ai_models_configuration": {
+    "total_models": 20,
+    "target_iq": 300,
+    "expertise_level": "phd_business_management",
+    "user": "William Smiley",
+    "purpose": "Business Executive Directors Board Swarm Council"
+  },
+  "primary_models": {
+    "gpt5": {
+      "name": "GPT-5",
+      "provider": "OpenAI",
+      "api_endpoint": "https://api.openai.com/v1/chat/completions",
+      "model_id": "gpt-4",
+      "capabilities": ["strategic_planning", "complex_reasoning", "business_analysis"],
+      "expertise_weight": 0.15,
+      "max_tokens": 4000,
+      "temperature": 0.7,
+      "role": "Strategic Leadership and Complex Analysis"
+    },
+    "claude": {
+      "name": "Claude",
+      "provider": "Anthropic",
+      "api_endpoint": "https://api.anthropic.com/v1/messages",
+      "model_id": "claude-3-opus-20240229",
+      "capabilities": ["analytical_reasoning", "risk_assessment", "ethical_analysis"],
+      "expertise_weight": 0.15,
+      "max_tokens": 4000,
+      "temperature": 0.7,
+      "role": "Risk Assessment and Ethical Decision Making"
+    },
+    "abacus": {
+      "name": "Abacus.AI",
+      "provider": "Abacus.AI",
+      "api_endpoint": "https://api.abacus.ai/v1/chat",
+      "model_id": "chatllm",
+      "capabilities": ["enterprise_ai", "business_intelligence", "automation"],
+      "expertise_weight": 0.12,
+      "max_tokens": 3000,
+      "temperature": 0.6,
+      "role": "Enterprise Operations and Business Intelligence"
+    },
+    "genspark": {
+      "name": "Genspark.AI",
+      "provider": "Genspark.AI", 
+      "api_endpoint": "https://api.genspark.ai/v1/generate",
+      "model_id": "genspark-multimodal",
+      "capabilities": ["multimodal_analysis", "content_creation", "presentation_design"],
+      "expertise_weight": 0.10,
+      "max_tokens": 3000,
+      "temperature": 0.6,
+      "role": "Content Creation and Multimodal Analysis"
+    },
+    "manus": {
+      "name": "Manus.AI",
+      "provider": "Manus.AI",
+      "api_endpoint": "https://api.manus.ai/v1/analyze",
+      "model_id": "manus-business",
+      "capabilities": ["business_automation", "process_optimization", "workflow_management"],
+      "expertise_weight": 0.10,
+      "max_tokens": 3000,
+      "temperature": 0.6,
+      "role": "Business Process Optimization and Automation"
+    },
+    "storm": {
+      "name": "STORM (Stanford)",
+      "provider": "Stanford University",
+      "api_endpoint": "https://storm.genie.stanford.edu/api/generate",
+      "model_id": "storm-research",
+      "capabilities": ["research_synthesis", "knowledge_curation", "comprehensive_reports"],
+      "expertise_weight": 0.08,
+      "max_tokens": 4000,
+      "temperature": 0.5,
+      "role": "Research Synthesis and Knowledge Curation"
+    }
+  },
+  "specialized_models": {
+    "financial_ai": {
+      "name": "Financial AI Specialist",
+      "provider": "Custom",
+      "capabilities": ["financial_analysis", "risk_modeling", "investment_strategy"],
+      "expertise_weight": 0.08,
+      "role": "Financial Analysis and Investment Strategy",
+      "specialization": "CFO-level financial expertise"
+    },
+    "operations_ai": {
+      "name": "Operations AI Specialist", 
+      "provider": "Custom",
+      "capabilities": ["process_optimization", "supply_chain", "efficiency_analysis"],
+      "expertise_weight": 0.08,
+      "role": "Operational Excellence and Process Optimization",
+      "specialization": "COO-level operational expertise"
+    },
+    "strategy_ai": {
+      "name": "Strategic AI Advisor",
+      "provider": "Custom", 
+      "capabilities": ["strategic_planning", "competitive_analysis", "market_research"],
+      "expertise_weight": 0.07,
+      "role": "Strategic Planning and Competitive Intelligence",
+      "specialization": "CEO-level strategic thinking"
+    },
+    "hr_ai": {
+      "name": "Human Resources AI",
+      "provider": "Custom",
+      "capabilities": ["talent_management", "organizational_development", "performance_analysis"],
+      "expertise_weight": 0.06,
+      "role": "Human Capital and Organizational Development",
+      "specialization": "CHRO-level people expertise"
+    },
+    "marketing_ai": {
+      "name": "Marketing AI Specialist",
+      "provider": "Custom",
+      "capabilities": ["market_analysis", "customer_insights", "brand_strategy"],
+      "expertise_weight": 0.06,
+      "role": "Marketing Strategy and Customer Intelligence",
+      "specialization": "CMO-level marketing expertise"
+    },
+    "legal_ai": {
+      "name": "Legal AI Advisor",
+      "provider": "Custom",
+      "capabilities": ["legal_analysis", "compliance", "contract_review"],
+      "expertise_weight": 0.05,
+      "role": "Legal Analysis and Regulatory Compliance",
+      "specialization": "General Counsel-level legal expertise"
+    },
+    "innovation_ai": {
+      "name": "Innovation AI Catalyst",
+      "provider": "Custom",
+      "capabilities": ["innovation_management", "technology_trends", "disruption_analysis"],
+      "expertise_weight": 0.05,
+      "role": "Innovation Strategy and Technology Assessment",
+      "specialization": "CTO-level innovation expertise"
+    }
+  },
+  "research_models": {
+    "gemini": {
+      "name": "Google Gemini",
+      "provider": "Google",
+      "api_endpoint": "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent",
+      "capabilities": ["multimodal_reasoning", "data_analysis", "comprehensive_analysis"],
+      "expertise_weight": 0.07,
+      "role": "Multimodal Analysis and Data Intelligence"
+    },
+    "perplexity": {
+      "name": "Perplexity AI",
+      "provider": "Perplexity AI",
+      "api_endpoint": "https://api.perplexity.ai/chat/completions",
+      "model_id": "pplx-70b-online",
+      "capabilities": ["real_time_research", "fact_checking", "current_information"],
+      "expertise_weight": 0.06,
+      "role": "Real-time Research and Information Synthesis"
+    },
+    "cohere": {
+      "name": "Cohere",
+      "provider": "Cohere",
+      "api_endpoint": "https://api.cohere.ai/v1/generate",
+      "model_id": "command",
+      "capabilities": ["language_understanding", "text_analysis", "semantic_search"],
+      "expertise_weight": 0.05,
+      "role": "Language Understanding and Semantic Analysis"
+    },
+    "mistral": {
+      "name": "Mistral AI",
+      "provider": "Mistral AI",
+      "api_endpoint": "https://api.mistral.ai/v1/chat/completions",
+      "model_id": "mistral-large-latest",
+      "capabilities": ["european_business", "regulatory_compliance", "multilingual_analysis"],
+      "expertise_weight": 0.05,
+      "role": "European Business Expertise and Regulatory Analysis"
+    },
+    "together": {
+      "name": "Together AI",
+      "provider": "Together AI",
+      "api_endpoint": "https://api.together.xyz/inference",
+      "model_id": "togethercomputer/llama-2-70b-chat",
+      "capabilities": ["distributed_computing", "ensemble_methods", "high_throughput"],
+      "expertise_weight": 0.04,
+      "role": "Distributed AI Processing and Ensemble Methods"
+    },
+    "huggingface": {
+      "name": "Hugging Face Models",
+      "provider": "Hugging Face",
+      "api_endpoint": "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large",
+      "capabilities": ["open_source_models", "specialized_domains", "research_models"],
+      "expertise_weight": 0.04,
+      "role": "Open Source AI Models and Research Applications"
+    },
+    "replicate": {
+      "name": "Replicate",
+      "provider": "Replicate",
+      "api_endpoint": "https://api.replicate.com/v1/predictions",
+      "capabilities": ["model_hosting", "inference_optimization", "custom_models"],
+      "expertise_weight": 0.03,
+      "role": "Custom Model Hosting and Specialized Inference"
+    }
+  },
+  "coordination_settings": {
+    "ensemble_method": "weighted_consensus",
+    "consensus_threshold": 0.75,
+    "conflict_resolution": "expert_mediation",
+    "decision_timeout": 30000,
+    "parallel_processing": true,
+    "load_balancing": "expertise_based",
+    "fallback_strategy": "primary_models_only"
+  },
+  "business_expertise": {
+    "phd_frameworks": [
+      "Strategic Management Theory",
+      "Organizational Behavior",
+      "Financial Management",
+      "Operations Research",
+      "Marketing Management",
+      "Innovation Management",
+      "Leadership Theory",
+      "Business Ethics",
+      "International Business",
+      "Entrepreneurship"
+    ],
+    "analytical_capabilities": {
+      "target_iq": 300,
+      "reasoning_depth": "doctoral_level",
+      "problem_solving": "multi_dimensional",
+      "decision_making": "evidence_based",
+      "strategic_thinking": "systems_approach"
+    },
+    "executive_functions": [
+      "Strategic Planning",
+      "Financial Analysis",
+      "Risk Management", 
+      "Performance Optimization",
+      "Stakeholder Management",
+      "Change Management",
+      "Innovation Leadership",
+      "Competitive Intelligence",
+      "Market Analysis",
+      "Organizational Development"
+    ]
+  }
+}

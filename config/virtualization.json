@@ -1,0 +1,282 @@
+{
+  "virtualization_configuration": {
+    "platform": "Proxmox VE 9",
+    "target_hardware": "Apple iMac Conversion",
+    "user": "William Smiley",
+    "purpose": "AI Business Management Virtualization Environment"
+  },
+  "hardware_requirements": {
+    "minimum_specs": {
+      "cpu_cores": 8,
+      "memory_gb": 32,
+      "storage_gb": 500,
+      "network_interfaces": 2
+    },
+    "recommended_specs": {
+      "cpu_cores": 16,
+      "memory_gb": 64,
+      "storage_gb": 2000,
+      "network_interfaces": 4,
+      "gpu_support": true
+    },
+    "optimal_specs": {
+      "cpu_cores": 32,
+      "memory_gb": 128,
+      "storage_gb": 4000,
+      "network_interfaces": 6,
+      "gpu_support": true,
+      "nvme_storage": true
+    }
+  },
+  "vm_templates": {
+    "windows11_business": {
+      "template_id": 9000,
+      "name": "Windows 11 Business Template",
+      "ostype": "win11",
+      "memory_mb": 8192,
+      "cpu_cores": 4,
+      "storage_gb": 132,
+      "features": ["tpm", "secure_boot", "uefi"],
+      "optimization": "business_productivity"
+    },
+    "macos_business": {
+      "template_id": 9001,
+      "name": "macOS Business Template", 
+      "ostype": "other",
+      "memory_mb": 16384,
+      "cpu_cores": 8,
+      "storage_gb": 264,
+      "features": ["uefi", "apple_smc"],
+      "optimization": "creative_business"
+    },
+    "ai_processing_node": {
+      "template_id": 9002,
+      "name": "AI Processing Node Template",
+      "ostype": "l26",
+      "memory_mb": 32768,
+      "cpu_cores": 16,
+      "storage_gb": 600,
+      "features": ["high_performance", "multi_network"],
+      "optimization": "ai_workloads"
+    }
+  },
+  "vm_instances": {
+    "william_smiley_desktop": {
+      "vmid": 100,
+      "template": "windows11_business",
+      "name": "william-smiley-desktop",
+      "memory_mb": 16384,
+      "cpu_cores": 6,
+      "purpose": "Primary business workstation",
+      "priority": "high",
+      "auto_start": true
+    },
+    "william_smiley_macos": {
+      "vmid": 101,
+      "template": "macos_business",
+      "name": "william-smiley-macos",
+      "memory_mb": 24576,
+      "cpu_cores": 8,
+      "purpose": "Creative business workstation",
+      "priority": "medium",
+      "auto_start": false
+    },
+    "ai_coordination_primary": {
+      "vmid": 102,
+      "template": "ai_processing_node",
+      "name": "ai-coordination-primary",
+      "memory_mb": 49152,
+      "cpu_cores": 12,
+      "purpose": "Primary AI coordination and MCP server",
+      "priority": "critical",
+      "auto_start": true
+    },
+    "ai_models_specialized": {
+      "vmid": 103,
+      "template": "ai_processing_node",
+      "name": "ai-models-specialized",
+      "memory_mb": 32768,
+      "cpu_cores": 10,
+      "purpose": "Specialized AI models hosting",
+      "priority": "high",
+      "auto_start": true
+    },
+    "ai_research_analytics": {
+      "vmid": 104,
+      "template": "ai_processing_node",
+      "name": "ai-research-analytics",
+      "memory_mb": 32768,
+      "cpu_cores": 10,
+      "purpose": "Research and analytics AI models",
+      "priority": "high",
+      "auto_start": true
+    }
+  },
+  "network_configuration": {
+    "bridges": {
+      "vmbr0": {
+        "description": "Primary business network",
+        "subnet": "192.168.1.0/24",
+        "gateway": "192.168.1.1",
+        "dns": ["8.8.8.8", "8.8.4.4"],
+        "vlan_aware": true
+      },
+      "vmbr1": {
+        "description": "AI processing network",
+        "subnet": "10.0.0.0/24",
+        "gateway": "10.0.0.1",
+        "internal_only": true,
+        "high_performance": true
+      }
+    },
+    "firewall_rules": {
+      "management": {
+        "ssh": "port_22",
+        "proxmox_web": "port_8006",
+        "vnc_range": "ports_5900_5999"
+      },
+      "ai_services": {
+        "mcp_server": "port_3000",
+        "ai_coordination": "ports_8080_8090",
+        "executive_board": "ports_9000_9010"
+      },
+      "business_applications": {
+        "web_services": "ports_80_443",
+        "database": "ports_3306_5432",
+        "messaging": "ports_25_587"
+      }
+    }
+  },
+  "storage_configuration": {
+    "storage_pools": {
+      "local": {
+        "path": "/var/lib/vz",
+        "content": ["backup", "vztmpl", "iso"],
+        "maxfiles": 3
+      },
+      "local-lvm": {
+        "vgname": "pve",
+        "thinpool": "data",
+        "content": ["rootdir", "images"],
+        "performance": "high"
+      },
+      "ai-models": {
+        "path": "/var/lib/vz/ai-models",
+        "content": ["images", "rootdir"],
+        "maxfiles": 10,
+        "optimization": "ai_workloads"
+      },
+      "business-data": {
+        "path": "/var/lib/vz/business-data",
+        "content": ["backup", "snippets"],
+        "maxfiles": 50,
+        "encryption": true
+      }
+    },
+    "backup_strategy": {
+      "schedule": "daily_2am",
+      "retention": "30_days",
+      "compression": "gzip",
+      "verification": "automatic",
+      "offsite_backup": "weekly"
+    }
+  },
+  "performance_optimization": {
+    "cpu_optimization": {
+      "cpu_type": "host",
+      "numa_enabled": true,
+      "cpu_affinity": "automatic",
+      "scheduler": "cfq",
+      "governor": "performance"
+    },
+    "memory_optimization": {
+      "ballooning": true,
+      "ksm": true,
+      "hugepages": "automatic",
+      "swappiness": 10,
+      "overcommit": 1.5
+    },
+    "storage_optimization": {
+      "cache_mode": "writethrough",
+      "io_scheduler": "mq-deadline",
+      "discard": "on",
+      "ssd_optimization": true,
+      "thin_provisioning": true
+    },
+    "network_optimization": {
+      "multiqueue": true,
+      "offloading": "enabled",
+      "buffer_tuning": "automatic",
+      "qos_enabled": true,
+      "bonding": "active-backup"
+    }
+  },
+  "monitoring_configuration": {
+    "system_monitoring": {
+      "cpu_usage": "real_time",
+      "memory_usage": "real_time",
+      "storage_usage": "real_time",
+      "network_usage": "real_time",
+      "vm_performance": "detailed"
+    },
+    "alerting": {
+      "cpu_threshold": 80,
+      "memory_threshold": 85,
+      "storage_threshold": 90,
+      "network_threshold": 75,
+      "vm_down_alert": "immediate"
+    },
+    "logging": {
+      "system_logs": "centralized",
+      "vm_logs": "aggregated",
+      "audit_logs": "comprehensive",
+      "retention": "90_days",
+      "analysis": "automated"
+    }
+  },
+  "security_configuration": {
+    "access_control": {
+      "authentication": "pam",
+      "authorization": "rbac",
+      "two_factor": "enabled",
+      "session_timeout": 3600,
+      "password_policy": "strong"
+    },
+    "network_security": {
+      "firewall": "enabled",
+      "intrusion_detection": "enabled",
+      "vpn_support": "openvpn",
+      "ssl_certificates": "letsencrypt",
+      "port_security": "strict"
+    },
+    "data_security": {
+      "encryption_at_rest": "luks",
+      "encryption_in_transit": "tls",
+      "backup_encryption": "gpg",
+      "key_management": "centralized",
+      "compliance": "gdpr_ready"
+    }
+  },
+  "disaster_recovery": {
+    "backup_locations": {
+      "local": "/var/lib/vz/backups",
+      "network": "nfs://backup-server/proxmox",
+      "cloud": "s3://business-backups/proxmox"
+    },
+    "recovery_procedures": {
+      "vm_recovery": "automated",
+      "full_system_recovery": "documented",
+      "data_recovery": "point_in_time",
+      "network_recovery": "redundant_paths",
+      "testing_schedule": "monthly"
+    },
+    "business_continuity": {
+      "rto_target": "4_hours",
+      "rpo_target": "1_hour",
+      "failover_site": "configured",
+      "communication_plan": "defined",
+      "staff_training": "quarterly"
+    }
+  }
+}
+</config>

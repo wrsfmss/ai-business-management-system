@@ -1,0 +1,52 @@
+{
+  "name": "ai-business-management-system",
+  "version": "1.0.0",
+  "description": "Super-intelligent business management operations support system with 20+ AI models",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "build": "npm run build:mcp-server",
+    "build:mcp-server": "node build/build-mcp-server.js",
+    "setup:proxmox": "bash virtualization/proxmox-setup/install.sh",
+    "setup:vms": "bash virtualization/vm-configs/setup-vms.sh"
+  },
+  "keywords": [
+    "ai",
+    "business-management",
+    "mcp-server",
+    "executive-assistant",
+    "multi-ai-integration",
+    "proxmox",
+    "virtualization",
+    "phd-level",
+    "iq-300"
+  ],
+  "author": "William Smiley",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "axios": "^1.6.0",
+    "express": "^4.18.0",
+    "ws": "^8.14.0",
+    "openai": "^4.20.0",
+    "@anthropic-ai/sdk": "^0.24.0",
+    "dotenv": "^16.3.0",
+    "uuid": "^9.0.0",
+    "lodash": "^4.17.0",
+    "moment": "^2.29.0",
+    "winston": "^3.11.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "jest": "^29.7.0",
+    "@types/node": "^20.8.0",
+    "eslint": "^8.52.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "name": "macOS Business Template",
+  "description": "Optimized macOS template for creative business operations and AI integration",
+  "user": "William Smiley",
+  "purpose": "Mixed OS business environment with macOS applications",
+  "specifications": {
+    "vmid": 9001,
+    "ostype": "other",
+    "memory": 16384,
+    "cores": 8,
+    "sockets": 1,
+    "cpu": "Penryn,kvm=on,vendor=GenuineIntel,+kvm_pv_unhalt,+kvm_pv_eoi,+hypervisor,+invtsc,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+avx2,+aes,+fma,+fma4,+bmi1,+bmi2,+xsave,+xsaveopt,check",
+    "machine": "q35",
+    "bios": "ovmf",
+    "boot": "order=ide2",
+    "agent": "enabled=1"
+  },
+  "storage": {
+    "scsi0": {
+      "size": "64G",
+      "format": "qcow2",
+      "storage": "local-lvm",
+      "description": "macOS system disk"
+    },
+    "scsi1": {
+      "size": "200G",
+      "format": "qcow2", 
+      "storage": "local-lvm",
+      "description": "Applications and data disk"
+    },
+    "efidisk0": {
+      "size": "1M",
+      "format": "raw",
+      "storage": "local-lvm",
+      "efitype": "4m"
+    }
+  },
+  "network": {
+    "net0": {
+      "model": "virtio",
+      "bridge": "vmbr0",
+      "description": "Primary business network"
+    }
+  },
+  "special_args": [
+    "-device isa-applesmc,osk=\"ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc\"",
+    "-smbios type=2",
+    "-device usb-kbd,bus=ehci.0,port=2",
+    "-global nec-usb-xhci.msi=off",
+    "-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off"
+  ],
+  "features": {
+    "uefi": true,
+    "guest_agent": true,
+    "apple_smc": true,
+    "usb_keyboard": true
+  },
+  "optimization": {
+    "target": "creative_business",
+    "ai_development": true,
+    "cross_platform_integration": true,
+    "executive_productivity": true
+  },
+  "software_recommendations": [
+    "Final Cut Pro for video content",
+    "Logic Pro for audio production",
+    "Keynote for presentations",
+    "Numbers for spreadsheets",
+    "Xcode for AI app development",
+    "Adobe Creative Suite",
+    "Business productivity apps",
+    "AI development tools"
+  ],
+  "licensing": {
+    "note": "Requires valid macOS license",
+    "compliance": "Ensure compliance with Apple's virtualization policies",
+    "supported_versions": ["macOS Monterey", "macOS Ventura", "macOS Sonoma"]
+  },
+  "performance": {
+    "memory_balloon": false,
+    "cpu_hotplug": false,
+    "disk_cache": "writethrough",
+    "network_multiqueue": true,
+    "apple_optimizations": true
+  },
+  "limitations": {
+    "gpu_passthrough": "Limited support",
+    "hardware_acceleration": "CPU-based only",
+    "audio": "May require additional configuration",
+    "usb_devices": "Limited passthrough support"
+  }
+}
