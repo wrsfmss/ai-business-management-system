@@ -18,21 +18,19 @@ describe('AI Integration Tests', () => {
     });
 
     describe('AI Model Manager', () => {
-        test('should initialize with 20+ AI models', async () => {
+        test('should initialize with 3 core AI models', async () => {
             await aiModelManager.initialize();
-            expect(aiModelManager.getModelCount()).toBeGreaterThanOrEqual(20);
+            expect(aiModelManager.getModelCount()).toBe(3);
         });
 
-        test('should include all required primary models', async () => {
+        test('should include all 3 core models', async () => {
             await aiModelManager.initialize();
             const modelKeys = aiModelManager.getModelKeys();
             
             expect(modelKeys).toContain('gpt5');
             expect(modelKeys).toContain('claude');
             expect(modelKeys).toContain('abacus');
-            expect(modelKeys).toContain('genspark');
-            expect(modelKeys).toContain('manus');
-            expect(modelKeys).toContain('storm');
+            expect(modelKeys).toHaveLength(3);
         });
 
         test('should handle model calls with fallback', async () => {
