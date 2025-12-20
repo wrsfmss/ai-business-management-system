@@ -137,3 +137,5 @@ ai-business-management-system/
 
 ## License
 MIT License - Built for William Smiley's business operations
+
+<!-- Dummy test change for PR verification -->
