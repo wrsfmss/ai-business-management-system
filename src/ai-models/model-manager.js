@@ -36,8 +36,14 @@ class AIModelManager {
         }
     }
 
+    isValidApiKey(key) {
+        const normalized = (key || '').trim();
+        const lower = normalized.toLowerCase();
+        return normalized.length > 10 && !lower.includes('your_') && !lower.includes('_here');
+    }
+
     async initializeOpenAI() {
-        if (process.env.OPENAI_API_KEY) {
+        if (this.isValidApiKey(process.env.OPENAI_API_KEY)) {
             const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
             
             this.models.set('gpt5', {
@@ -104,7 +110,7 @@ class AIModelManager {
     }
 
     async initializeAnthropic() {
-        if (process.env.ANTHROPIC_API_KEY) {
+        if (this.isValidApiKey(process.env.ANTHROPIC_API_KEY)) {
             const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
             
             this.models.set('claude', {
@@ -283,7 +289,7 @@ class AIModelManager {
     }
 
     async initializeCohere() {
-        if (process.env.COHERE_API_KEY) {
+        if (this.isValidApiKey(process.env.COHERE_API_KEY)) {
             this.models.set('cohere', {
                 name: 'Cohere',
                 provider: 'Cohere',
