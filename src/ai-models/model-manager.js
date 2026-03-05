@@ -37,7 +37,9 @@ class AIModelManager {
     }
 
     isValidApiKey(key) {
-        return key && !key.includes('your_') && !key.includes('_here') && key.length > 10;
+        const normalized = (key || '').trim();
+        const lower = normalized.toLowerCase();
+        return normalized.length > 10 && !lower.includes('your_') && !lower.includes('_here');
     }
 
     async initializeOpenAI() {

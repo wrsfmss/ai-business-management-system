@@ -439,8 +439,9 @@ class VirtualizationManager {
     }
 
     isProxmoxAvailable() {
-        const host = process.env.PROXMOX_HOST;
-        return host && host !== 'localhost' && !host.includes('your_') && host !== 'your_proxmox_host';
+        const host = (process.env.PROXMOX_HOST || '').trim().toLowerCase();
+        const invalidHosts = new Set(['', 'localhost', '127.0.0.1', '::1', 'your_proxmox_host']);
+        return !invalidHosts.has(host) && !host.includes('your_') && !host.includes('_here');
     }
 }
 
