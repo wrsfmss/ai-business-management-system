@@ -395,7 +395,7 @@ class VirtualizationManager {
                 const { stdout } = await execAsync('qm list');
                 return { inventory: stdout, count: stdout.split('\n').length - 1 };
             } catch (error) {
-                return { inventory: 'Error retrieving VM list', error: error.message };
+                return { inventory: 'Error retrieving VM list', count: 0, error: error.message };
             }
         } else {
             return {
@@ -439,7 +439,8 @@ class VirtualizationManager {
     }
 
     isProxmoxAvailable() {
-        return process.env.PROXMOX_HOST && process.env.PROXMOX_HOST !== 'localhost';
+        const host = process.env.PROXMOX_HOST;
+        return host && host !== 'localhost' && !host.includes('your_') && host !== 'your_proxmox_host';
     }
 }
 
