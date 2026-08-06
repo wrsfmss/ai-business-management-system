@@ -137,3 +137,23 @@ ai-business-management-system/
 
 ## License
 MIT License - Built for William Smiley's business operations
+
+## HTTP Dashboard API (New)
+
+A lightweight Express API is included for local status/dashboard integrations.
+
+### Endpoints
+- `GET /healthz` - health and uptime
+- `GET /providers` - active LLM fallback chain from `LLM_FALLBACK_CHAIN`
+- `GET /jobs` - scheduled jobs loaded from `JOBS_JSON`
+
+### Run locally
+```bash
+cp .env.example .env
+npm run start:http
+```
+
+### Run with Docker
+```bash
+docker compose up --build
+```

@@ -10,7 +10,9 @@
     "build": "npm run build:mcp-server",
     "build:mcp-server": "node build/build-mcp-server.js",
     "setup:proxmox": "bash virtualization/proxmox-setup/install.sh",
-    "setup:vms": "bash virtualization/vm-configs/setup-vms.sh"
+    "setup:vms": "bash virtualization/vm-configs/setup-vms.sh",
+    "start:http": "node src/http-server.js",
+    "dev:http": "nodemon src/http-server.js"
   },
   "keywords": [
     "ai",
