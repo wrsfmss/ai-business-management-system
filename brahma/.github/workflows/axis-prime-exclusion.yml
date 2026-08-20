@@ -1,0 +1,22 @@
+name: BRAHMA AXIS PRIME exclusion
+
+on:
+  pull_request:
+  push:
+    branches:
+      - brahma/phase-5-foundation
+      - main
+
+jobs:
+  exclusion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on AXIS PRIME runtime references
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RniE --exclude-dir=.git --exclude='axis-prime-exclusion.yml' --exclude='AXIS_PRIME_EXCLUSION.md' 'AXIS[_ -]?PRIME' .; then
+            echo 'AXIS PRIME reference detected. BRAHMA JARVIS must remain standalone.'
+            exit 1
+          fi
