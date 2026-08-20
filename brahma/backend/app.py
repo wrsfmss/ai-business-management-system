@@ -3,9 +3,8 @@ import os
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 
-from brahma.backend.api.attention import AttentionAPI
-from brahma.backend.api.attention_routes import AttentionSubmission, AuthenticatedAttentionRoute
 from brahma.backend.auth import SupabaseAuthVerifier
+from brahma.backend.attention_service import AttentionService
 from brahma.backend.postgres import PostgresExecutor
 
 app = FastAPI(title="BRAHMA JARVIS", version="5.9")
@@ -16,7 +15,7 @@ class DecisionBody(BaseModel):
     idempotency_key: str
 
 
-def _runtime() -> tuple[SupabaseAuthVerifier, AuthenticatedAttentionRoute]:
+def _services() -> tuple[SupabaseAuthVerifier, AttentionService]:
     auth_enabled = os.getenv("BRAHMA_SUPABASE_AUTH_ENABLED", "false").lower() == "true"
     verifier = SupabaseAuthVerifier(enabled=auth_enabled)
     dsn = os.getenv("BRAHMA_DATABASE_URL")
@@ -26,9 +25,8 @@ def _runtime() -> tuple[SupabaseAuthVerifier, AuthenticatedAttentionRoute]:
         executor = PostgresExecutor(dsn)
     except (ValueError, RuntimeError) as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
-    # AttentionAPI's current validation boundary is retained here; the live
-    # PostgreSQL RPC is the next application-service integration point.
-    return verifier, AuthenticatedAttentionRoute(AttentionAPI())
+    from brahma.backend.db import AttentionRepository
+    return verifier, AttentionService(AttentionRepository(executor))
 
 
 @app.get("/readyz")
@@ -43,13 +41,16 @@ def decide_attention(
     request_id: str,
     body: DecisionBody,
     authorization: str | None = Header(default=None),
-) -> dict[str, str]:
-    verifier, route = _runtime()
+) -> dict:
+    verifier, service = _services()
     user = verifier.verify(authorization)
     try:
-        return route.submit(
+        result = service.decide(
+            request_id,
             user.user_id,
-            AttentionSubmission(request_id, body.decision, body.idempotency_key),
+            body.decision,
+            body.idempotency_key,
         )
+        return result if isinstance(result, dict) else {"result": result}
     except (PermissionError, ValueError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
