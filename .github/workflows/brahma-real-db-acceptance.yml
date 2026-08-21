@@ -40,18 +40,26 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install PostgreSQL client
-        run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
       - name: Install BRAHMA dependencies
-        run: python -m pip install --upgrade pip && python -m pip install -r brahma/requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r brahma/requirements.txt
 
       - name: Apply BRAHMA database migrations
         run: |
-          for file in brahma/migrations/*.sql; do
-            [ -f "$file" ] || continue
-            psql "$BRAHMA_DATABASE_URL" -v ON_ERROR_STOP=1 -f "$file"
-          done
+          python - <<'PY'
+          import glob
+          import os
+          import psycopg
+
+          dsn = os.environ['BRAHMA_DATABASE_URL']
+          with psycopg.connect(dsn) as conn:
+              for path in sorted(glob.glob('brahma/migrations/*.sql')):
+                  print(f'Applying {path}')
+                  with conn.cursor() as cur:
+                      cur.execute(open(path, encoding='utf-8').read())
+              conn.commit()
+          PY
 
       - name: Run BRAHMA integration tests
         run: python -m pytest -q brahma/tests/integration
