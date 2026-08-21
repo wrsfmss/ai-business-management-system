@@ -65,10 +65,7 @@ def test_real_db_attention_is_idempotent_and_audited() -> None:
 
     with psycopg.connect(dsn) as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                "select status from brahma_attention_requests where id = %s",
-                (request_id,),
-            )
+            cur.execute("select status from brahma_attention_requests where id = %s", (request_id,))
             assert cur.fetchone()[0] == "approved"
 
             cur.execute(
@@ -96,14 +93,7 @@ def test_real_db_concurrent_same_idempotency_key_has_one_side_effect() -> None:
 
     with ThreadPoolExecutor(max_workers=2) as pool:
         futures = [
-            pool.submit(
-                _repository_decide,
-                dsn,
-                request_id,
-                actor_id,
-                "approve",
-                idempotency_key,
-            )
+            pool.submit(_repository_decide, dsn, request_id, actor_id, "approve", idempotency_key)
             for _ in range(2)
         ]
         results = [future.result() for future in futures]
@@ -117,13 +107,43 @@ def test_real_db_concurrent_same_idempotency_key_has_one_side_effect() -> None:
                 (request_id,),
             )
             assert cur.fetchone()[0] == 1
-
             cur.execute(
                 "select count(*) from brahma_audit_events "
                 "where execution_id = %s and event_type = 'attention_decision'",
                 (execution_id,),
             )
             assert cur.fetchone()[0] == 1
+
+
+def test_real_db_rolls_back_entire_decision_on_invalid_input() -> None:
+    dsn = os.getenv("BRAHMA_DATABASE_URL")
+    if not dsn:
+        pytest.skip("BRAHMA_DATABASE_URL is not configured")
+
+    actor_id = str(uuid.uuid4())
+    request_id, execution_id = _seed_pending_request(dsn, actor_id)
+    key = str(uuid.uuid4())
+
+    with pytest.raises(Exception, match="invalid decision"):
+        _repository_decide(dsn, request_id, actor_id, "not-a-decision", key)
+
+    with psycopg.connect(dsn) as conn:
+        with conn.cursor() as cur:
+            cur.execute("select status from brahma_attention_requests where id = %s", (request_id,))
+            assert cur.fetchone()[0] == "pending"
+            cur.execute(
+                "select count(*) from brahma_attention_decisions where attention_request_id = %s",
+                (request_id,),
+            )
+            assert cur.fetchone()[0] == 0
+            cur.execute(
+                "select count(*) from brahma_audit_events "
+                "where execution_id = %s and event_type = 'attention_decision'",
+                (execution_id,),
+            )
+            assert cur.fetchone()[0] == 0
+            cur.execute("select count(*) from brahma_idempotency_keys where key = %s", (key,))
+            assert cur.fetchone()[0] == 0
 
 
 def test_real_db_rejects_second_transition_with_new_idempotency_key() -> None:
