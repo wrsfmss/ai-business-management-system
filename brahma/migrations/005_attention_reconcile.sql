@@ -13,7 +13,7 @@ as $$
 declare
   existing jsonb;
   req brahma_attention_requests%rowtype;
-  result jsonb;
+  v_result jsonb;
 begin
   -- Reserve the idempotency key before changing business state. ON CONFLICT
   -- waits for a concurrent inserter and prevents duplicate side effects.
@@ -21,9 +21,9 @@ begin
   values (p_idempotency_key, 'attention_decision', '{}'::jsonb)
   on conflict (key) do nothing;
 
-  select result into existing
-    from brahma_idempotency_keys
-   where key = p_idempotency_key
+  select k.result into existing
+    from brahma_idempotency_keys as k
+   where k.key = p_idempotency_key
    for update;
 
   if existing <> '{}'::jsonb then
@@ -77,16 +77,16 @@ begin
     )
   );
 
-  result := jsonb_build_object(
+  v_result := jsonb_build_object(
     'request_id', p_request_id,
     'decision', p_decision,
     'status', 'recorded'
   );
 
-  update brahma_idempotency_keys
-     set result = result
-   where key = p_idempotency_key;
+  update brahma_idempotency_keys as k
+     set result = v_result
+   where k.key = p_idempotency_key;
 
-  return result;
+  return v_result;
 end;
 $$;
