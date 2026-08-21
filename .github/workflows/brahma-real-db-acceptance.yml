@@ -6,6 +6,10 @@ on:
     paths:
       - 'brahma/**'
       - '.github/workflows/brahma-real-db-acceptance.yml'
+  pull_request:
+    paths:
+      - 'brahma/**'
+      - '.github/workflows/brahma-real-db-acceptance.yml'
 
 jobs:
   real-db-acceptance:
@@ -36,20 +40,18 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install BRAHMA test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest psycopg[binary] fastapi pydantic
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Install BRAHMA dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r brahma/requirements.txt
 
       - name: Apply BRAHMA database migrations
         run: |
-          if [ -d brahma/migrations ]; then
-            for file in brahma/migrations/*.sql; do
-              [ -f "$file" ] || continue
-              PGPASSWORD=postgres psql "$BRAHMA_DATABASE_URL" -v ON_ERROR_STOP=1 -f "$file"
-            done
-          fi
+          for file in brahma/migrations/*.sql; do
+            [ -f "$file" ] || continue
+            psql "$BRAHMA_DATABASE_URL" -v ON_ERROR_STOP=1 -f "$file"
+          done
 
-      - name: Run real database acceptance
-        run: |
-          python -m pytest -q brahma/tests/integration/test_real_db_attention.py
+      - name: Run BRAHMA integration tests
+        run: python -m pytest -q brahma/tests/integration
