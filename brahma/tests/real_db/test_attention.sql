@@ -1,0 +1,12 @@
+-- Real-DB acceptance assertions for durable attention decisions.
+-- Execute after migrations 001-005 against disposable PostgreSQL/Supabase.
+
+-- A valid request is assumed to exist as :request_id with status=pending.
+-- 1. Call brahma_decide_attention(request_id, actor_id, 'approve', unique_key).
+-- 2. Repeat the identical call with the same idempotency key.
+-- Expected: both calls return the same result; one decision row exists; one audit row exists.
+-- 3. Attempt a different decision against the same request.
+-- Expected: transaction fails because the request is no longer pending / unique decision exists.
+-- 4. Verify counts:
+-- select count(*) from brahma_attention_decisions where attention_request_id=:request_id; -- 1
+-- select count(*) from brahma_audit_events where execution_id=:execution_id and event_type='attention_decision'; -- 1
