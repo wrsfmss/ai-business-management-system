@@ -1,0 +1,25 @@
+name: brahma-runner-diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/brahma-runner-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  runner-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Runner identity
+        run: |
+          echo "runner-smoke: started"
+          echo "RUNNER_OS=${RUNNER_OS}"
+          echo "RUNNER_ARCH=${RUNNER_ARCH}"
+          echo "GITHUB_SHA=${GITHUB_SHA}"
+          uname -a
+          python3 --version
+          echo "runner-smoke: PASS"
