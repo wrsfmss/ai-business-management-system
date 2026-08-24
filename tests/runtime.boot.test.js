@@ -1,4 +1,5 @@
 const AIBusinessManagementServer = require('../src/index');
+const { createRuntime } = require('../src/runtime');
 
 describe('R37 runtime boot integration', () => {
   test('loads the repository runtime without executing the transport', () => {
@@ -12,8 +13,9 @@ describe('R37 runtime boot integration', () => {
     expect(runtime.coordinationEngine).toBeDefined();
   });
 
-  test('exposes an explicit R37 runtime seam', () => {
-    const { requireContract } = require('./r37-contract');
-    expect(() => requireContract('runtime')).not.toThrow();
+  test('creates the runtime through the explicit R37 seam', () => {
+    const runtime = createRuntime({ testMode: true });
+    expect(runtime).toBeInstanceOf(AIBusinessManagementServer);
+    expect(runtime.runtimeOptions).toEqual({ testMode: true });
   });
 });
