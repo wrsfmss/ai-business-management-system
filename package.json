@@ -7,6 +7,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest",
+    "test:r37": "jest tests/runtime.boot.test.js tests/state.persistence.test.js tests/event.bus.test.js tests/command.bus.test.js tests/mission.lifecycle.test.js tests/memory.persistence.test.js tests/scheduler.test.js tests/electron.smoke.test.js --runInBand",
     "build": "npm run build:mcp-server",
     "build:mcp-server": "node build/build-mcp-server.js",
     "setup:proxmox": "bash virtualization/proxmox-setup/install.sh",
