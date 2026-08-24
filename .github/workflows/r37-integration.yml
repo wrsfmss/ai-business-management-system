@@ -1,0 +1,32 @@
+name: R37 Integration Harness
+
+on:
+  push:
+    branches:
+      - r37/integration-harness
+  pull_request:
+    branches:
+      - r37/integration-harness
+      - devin/1755078359-ai-business-management-system
+
+jobs:
+  integration:
+    name: R37 integration tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run R37 harness
+        run: npm run test:r37 -- --ci
